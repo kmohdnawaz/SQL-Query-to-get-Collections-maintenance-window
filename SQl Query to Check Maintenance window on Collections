@@ -1,0 +1,17 @@
+select 
+c.Name as 'Collection Names',
+sw.Name as 'Maintenance Window Name',
+sw.Duration,
+CAST(sw.StartTime as date) as 'Start Date',
+case
+when sw.RecurrenceType ='1' Then 'None'
+when sw.RecurrenceType ='2' Then 'DAILY'
+when sw.RecurrenceType ='3' Then 'Weekly'
+when sw.RecurrenceType ='4' Then 'MONTHLYBYWEEKDAY'
+when sw.RecurrenceType ='5' Then 'MONTHLYBYDATE'
+ else 'unknown' end as 'Recurrence Type',
+
+c.Comment,sw.Description from v_ServiceWindow sw
+join v_Collection c on c.CollectionID = sw.CollectionID
+
+order by sw.StartTime
